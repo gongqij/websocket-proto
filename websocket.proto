@@ -41,6 +41,16 @@ message Request {
     UnsubscribeAllViewerOrdersRequest unsubscribe_all_viewer_orders_request = 127;
     SubscribeSpotCostPriceRequest subscribe_spot_cost_price_request = 128;
     UnSubscribeSpotCostPriceRequest unsubscribe_spot_cost_price_request = 129;
+    SubscribeAlphaTokenCandlesRequest subscribe_alpha_token_candles_request = 130;
+    UnsubscribeAlphaTokenCandlesRequest unsubscribe_alpha_token_candles_request = 131;
+    SubscribeAlphaTokensTickerRequest subscribe_alpha_tokens_ticker_request = 132;
+    UnsubscribeAlphaTokensTickerRequest unsubscribe_alpha_tokens_ticker_request = 133;
+    SubscribeAlphaOrdersRequest subscribe_alpha_orders_request = 134;
+    UnsubscribeAlphaOrdersRequest unsubscribe_alpha_orders_request = 135;
+    SubscribeAlphaAccountsRequest subscribe_alpha_accounts_request = 136;
+    UnsubscribeAlphaAccountsRequest unsubscribe_alpha_accounts_request = 137;
+    SubscribeAlphaTokenStatRequest subscribe_alpha_token_stat_request = 138;
+    UnsubscribeAlphaTokenStatRequest unsubscribe_alpha_token_stat_request = 139;
   }
 }
 
@@ -72,6 +82,16 @@ message Response {
     ExchangeRatesListUpdate exchange_rates_list_update = 119;
     SpotCostPriceSnapshot spot_cost_price_snapshot = 120;
     SpotCostPriceUpdate spot_cost_price_update = 121;
+    AlphaTokenCandlesSnapshot alpha_token_candles_snapshot = 122;
+    AlphaTokenCandleUpdate alpha_token_candle_update = 123;
+    AlphaTokensTickerSnapshot alpha_tokens_ticker_snapshot = 124;
+    AlphaTokenTickerUpdate alpha_token_ticker_update = 125;
+    AlphaOrderSnapshot alpha_order_snapshot = 126;
+    AlphaOrderUpdate alpha_order_update = 127;
+    AlphaAccountsSnapshot alpha_accounts_snapshot = 128;
+    AlphaAccountUpdate alpha_account_update = 129;
+    AlphaTokenStatSnapshot alpha_token_stat_snapshot = 130;
+    AlphaTokenStatUpdate alpha_token_stat_update = 131;
   }
 }
 
@@ -473,4 +493,159 @@ message SpotCostPriceSnapshot {
 
 message SpotCostPriceUpdate {
   SpotCostPrice spot_cost_price = 1;
+}
+
+message SubscribeAlphaTokenCandlesRequest {
+  uint64 token_id = 1;
+  Candle.Period period = 2;
+  int64 limit = 3;
+}
+
+message UnsubscribeAlphaTokenCandlesRequest {
+  uint64 token_id = 1;
+  Candle.Period period = 2;
+}
+
+message AlphaTokenCandle {
+  uint64 token_id = 1;
+  google.protobuf.Timestamp time = 2;
+  string open = 3;
+  string high = 4;
+  string low = 5;
+  string close = 6;
+  string volume = 7;
+  Candle.Period period = 8;
+}
+
+message AlphaTokenCandlesSnapshot {
+  repeated AlphaTokenCandle candles = 1;
+}
+
+message AlphaTokenCandleUpdate {
+  AlphaTokenCandle candle = 1;
+}
+
+message SubscribeAlphaTokensTickerRequest {
+  repeated uint64 token_ids = 1; // list of AlphaToken, empty means subscribing all tokens
+}
+
+message UnsubscribeAlphaTokensTickerRequest {
+  repeated uint64 token_ids = 1; // list of AlphaToken, empty means unsubscribing all tokens
+}
+
+message AlphaTokenTicker {
+  uint64 token_id = 1;
+  string open = 2;
+  string high = 3;
+  string low = 4;
+  string close = 5;
+  string volume = 6;
+  string dailyChange = 7;
+  string dailyChangePerc = 8;
+}
+
+message AlphaTokensTickerSnapshot {
+  repeated AlphaTokenTicker tickers = 1;
+}
+
+message AlphaTokenTickerUpdate {
+  AlphaTokenTicker ticker = 1;
+}
+
+message SubscribeAlphaOrdersRequest {
+  uint64 token_id = 1;
+}
+
+message UnsubscribeAlphaOrdersRequest {
+  uint64 token_id = 1;
+}
+
+message AlphaOrder {
+  enum Side {
+    BUY = 0;
+    SELL = 1;
+  }
+  enum Status{
+    PENDING = 0;
+    FILLED = 1;
+    FAILED = 2;
+  }
+  uint64 id = 1;
+  Side side = 2;
+  uint64 from_token = 3;
+  string from_amount = 4;
+  string from_icon_url = 5;
+  string from_chain_icon_url = 6;
+  uint64 to_token = 7;
+  string to_amount = 8;
+  string to_icon_url = 9;
+  string to_chain_icon_url = 10;
+  string actual_to_amount = 11;
+  Status status = 12;
+  string min_received_amount = 13;
+  string network_fee = 14;
+  string trading_fee = 15;
+  google.protobuf.Timestamp created_at = 16;
+  google.protobuf.Timestamp updated_at = 17;
+}
+
+message AlphaOrderSnapshot {
+  repeated AlphaOrder orders = 1;
+}
+
+message AlphaOrderUpdate {
+  AlphaOrder order = 1;
+}
+
+message SubscribeAlphaAccountsRequest {}
+
+message UnsubscribeAlphaAccountsRequest {}
+
+message AlphaAccount {
+  uint64 token_id = 1;
+  string token_symbol = 2;
+  uint64 chain_id = 3;
+  string chain_name = 4;
+  string contract_address = 5;
+  string balance = 6;
+  string locked_balance = 7;
+  string avg_cost_price = 8;
+}
+
+message AlphaAccountsSnapshot {
+  repeated AlphaAccount accounts = 1;
+}
+
+message AlphaAccountUpdate {
+  AlphaAccount account = 1;
+}
+
+message SubscribeAlphaTokenStatRequest {
+  uint64 token_id = 1;
+}
+
+message UnsubscribeAlphaTokenStatRequest {
+  uint64 token_id = 1;
+}
+
+message AlphaTokenStatSnapshot {
+  AlphaTokenStat token_stat = 1;
+}
+
+message AlphaTokenStatUpdate {
+  AlphaTokenStat token_stat = 1;
+}
+
+message AlphaTokenStat {
+  uint64 token_id = 1;
+  string market_cap = 2; //市值，单位美元
+  string liquidity = 3; //流动性，单位美元
+  string fdv = 4;//完全稀释市值，单位美元
+  string total_supply = 5;//总供应量，单位代币
+  string volume_24h = 6;//24小时交易量，单位代币
+  string volume_24h_usd = 7;//24小时交易量，单位美元
+  string contract_address = 8;
+  uint64 holder_count = 9;//持有人数
+  uint64 tx_count_24h = 10;//24小时交易次数
+  google.protobuf.Timestamp token_created_at = 11;//代币创建时间
 }
