@@ -574,19 +574,16 @@ message AlphaOrder {
   Side side = 2;
   uint64 from_token = 3;
   string from_amount = 4;
-  string from_icon_url = 5;
-  string from_chain_icon_url = 6;
-  uint64 to_token = 7;
-  string to_amount = 8;
-  string to_icon_url = 9;
-  string to_chain_icon_url = 10;
-  string actual_to_amount = 11;
-  Status status = 12;
-  string min_received_amount = 13;
-  string network_fee = 14;
-  string trading_fee = 15;
-  google.protobuf.Timestamp created_at = 16;
-  google.protobuf.Timestamp updated_at = 17;
+  string actual_from_amount = 5;
+  uint64 to_token = 6;
+  string to_amount = 7;
+  string actual_to_amount = 8;
+  Status status = 9;
+  string network_fee_usd = 10;
+  string actual_network_fee_usd = 11;
+  string trading_fee = 12;
+  google.protobuf.Timestamp created_at = 13;
+  google.protobuf.Timestamp updated_at = 14;
 }
 
 message AlphaOrderSnapshot {
