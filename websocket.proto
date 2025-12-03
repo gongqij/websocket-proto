@@ -571,14 +571,14 @@ message AlphaOrder {
     FAILED = 2;
   }
   uint64 id = 1;
-  Side side = 2;
+  optional Side side = 2;
   uint64 from_token = 3;
   string from_amount = 4;
   string actual_from_amount = 5;
   uint64 to_token = 6;
   string to_amount = 7;
   string actual_to_amount = 8;
-  Status status = 9;
+  optional Status status = 9;
   string network_fee_usd = 10;
   string actual_network_fee_usd = 11;
   string trading_fee = 12;
