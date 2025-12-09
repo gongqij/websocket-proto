@@ -553,11 +553,9 @@ message AlphaTokenTickerUpdate {
 }
 
 message SubscribeAlphaOrdersRequest {
-  uint64 token_id = 1;
 }
 
 message UnsubscribeAlphaOrdersRequest {
-  uint64 token_id = 1;
 }
 
 message AlphaOrder {
